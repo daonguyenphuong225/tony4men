@@ -1,0 +1,223 @@
+.logo{
+    height: 50px;
+}
+
+html,
+body {
+   font-family: "Rozha One", serif;
+   margin:0;
+   padding:0;
+   height:100%;
+}
+#container {
+   min-height:100%;
+   position:relative;
+   margin-top: 100px;
+}
+#header {
+
+   position: fixed;
+   top: 0 ;
+   z-index: 10;
+   background-color: rgb(250, 249, 244);
+   width: 100%;
+}
+#body {
+ 
+   padding:10px;
+   padding-bottom:60px;   /* Height of the footer */
+}
+#footer {
+   position:absolute;
+  bottom: -100px;
+   width:100%;
+   height:60px;   /* Height of the footer */
+   
+}
+.navbar-brand{
+   width: 28%;
+}
+.logo{
+   height: 35px;
+   
+}
+.img{
+   width: 60px;
+   height: 60px;
+}
+.customer{
+   width: 350px;
+}
+.top-header {
+   display: flex;
+   height: 25px;
+   justify-content: space-between;
+   background-color: rgb(230, 227, 227);
+   
+}
+@media only screen and (max-width: 480px){
+   .top-header{
+       display: none;
+   }
+ }
+
+
+
+ .sub-menu-parent { position: relative; }
+
+.sub-menu { 
+  visibility: hidden; /* hides sub-menu */
+  opacity: 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 150px;
+  transform: translateY(-2em);
+  z-index: -1;
+  transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
+}
+
+.sub-menu-parent:focus .sub-menu,
+.sub-menu-parent:focus-within .sub-menu,
+.sub-menu-parent:hover .sub-menu {
+  visibility: visible; /* shows sub-menu */
+  opacity: 1;
+  z-index: 1;
+  transform: translateY(0%);
+  transition-delay: 0s, 0s, 0.3s; /* this removes the transition delay so the menu will be visible while the other styles transition */
+}
+
+/* presentational */
+
+nav a { 
+   color: rgb(88, 88, 88); 
+   display: block; padding: 0.5em 1em; 
+   text-decoration: none;
+   font-weight: bold;
+ }
+nav a:hover { color: black; }
+nav ul,
+nav ul li { list-style-type: none; padding: 0; margin: 0; }
+
+nav > ul { background: #EEE; text-align: center; }
+nav > ul > li { display: inline-block; border-left: solid 1px #aaa; }
+nav > ul > li:first-child { border-left: none; }
+
+.sub-menu {
+  background: rgb(248, 248, 248);
+}
+
+/* Swiper */
+.swiper-container {
+   width: 100%;
+   height:600px;
+ }
+
+ .swiper-slide {
+   text-align: center;
+   font-size: 18px;
+   background: #fff;
+
+   /* Center slide text vertically */
+   display: -webkit-box;
+   display: -ms-flexbox;
+   display: -webkit-flex;
+   display: flex;
+   -webkit-box-pack: center;
+   -ms-flex-pack: center;
+   -webkit-justify-content: center;
+   justify-content: center;
+   -webkit-box-align: center;
+   -ms-flex-align: center;
+   -webkit-align-items: center;
+   align-items: center;
+ }
+
+ .swiper-slide img {
+   display: block;
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+ }
+/* Swiper */
+
+.product a, h3 a {
+   text-decoration: none;
+   color: rgb(88, 88, 88); 
+   font-weight: 600;
+}
+.product:hover a{
+
+   color: rgb(0, 0, 0); 
+
+}
+h3:hover a{
+
+   color: rgb(0, 0, 0); 
+
+}
+.product .underline{
+   height: 2px;
+   width: 100%;
+   background-color: black;
+   visibility: hidden;
+   opacity: 0;
+  transition: visibility 0s, opacity 0.7s linear;
+}
+.product:hover .underline{
+  
+   visibility: visible;
+   opacity: 1;
+}
+
+.picture-parent {
+   position: relative;
+  height: 150;
+}
+.picture-parent img.products-picture-hover {
+ position: absolute;
+ top: 0;
+ right: 0;
+ left: 0;
+ bottom: 0;
+ object-fit: contain;
+ opacity: 0;
+ transition: opacity 0.5s;
+}
+.picture-parent:hover img.products-picture-hover {
+ opacity: 1;
+}
+
+.addToCard{
+   width: 50%;
+   border-radius: 0;
+   padding: 5px;
+   border-right:1px solid white ;
+}
+.detail-btn{
+   width: 50%;
+   margin: 0;
+   border-radius: 0;
+   padding: 5px;
+}
+
+.product-footer{
+   visibility: hidden;
+   opacity: 0;
+   transition: opacity 0.5s;
+}
+.product-card:hover .product-footer{
+   visibility: visible;
+   opacity: 1;
+}
+.products-name{
+   margin-top: 5px;
+   color: rgb(112, 112, 112);
+   font-size: 18px;
+}
+.products-price{
+   font-weight: 600;
+}
+.footer-link a{
+   text-decoration: none;
+}

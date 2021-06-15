@@ -1,0 +1,24 @@
+.header-title{
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    box-shadow: 1px 1px black;
+    padding-left: 10px;
+}
+.inputWidth{
+    height: 30px;
+    width: 250px;
+}
+.update-parent{
+    visibility: hidden;
+}
+.parent-td:hover .update-parent{
+    visibility:visible
+}
+.filter-category{
+    height: 30px;
+    width: 150px;
+    border-radius: 5px;
+    border: 1px solid gray
+}
+

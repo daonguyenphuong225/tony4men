@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | General Form Elements</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="adminlte/plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="adminlte/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper d-flex flex-column ">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-1">
+          <div class="col-sm-6 d-flex">
+            <a href="product-list" class="btn btn-secondary m-2"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5zM10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5z"/>
+            </svg></a>
+            <h3 class="m-2">Thêm mới sản phẩm</h3>
+          </div>
+
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+
+            
+              <ul class="nav nav-tabs" style="background-color: rgb(38, 120, 241);" id="custom-content-above-tab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" style="color: black;" id="custom-content-above-home-tab" data-toggle="pill" href="#custom-content-above-home" role="tab" aria-controls="custom-content-above-home" aria-selected="true">Sản phẩm</a>
+                </li>
+                <li class="nav-item">
+                  <a class="productDetail-link nav-link" style="color: black;" id="custom-content-above-profile-tab" data-toggle="pill" href="#custom-content-above-profile" role="tab" aria-controls="custom-content-above-profile" aria-selected="false">Chi tiết sản phẩm</a>
+                </li>
+              </ul>
+
+              <div class="tab-content" id="custom-content-above-tabContent">
+                <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+                  <div class="form-group">
+                    <label>Tên sản phẩm</label>
+                    <input name="name"  class="form-control"  placeholder="Tên sản phẩm...">
+                  </div>
+                  <div class="form-group">
+                    <label>Giá (VNĐ)</label>
+                    <input name="price" class="form-control" placeholder="Giá sản phẩm...">
+                  </div>
+                  <div class="form-group">
+                    <label >Trạng thái</label>
+                    <select required class="status-select form-control " name="status">
+                      <option value="" disabled selected>Trạng thái...</option>
+                      <option value="0">Hoạt động</option>
+                      <option value="1">Tạm ngừng</option>
+                    </select>
+
+                  </div>
+                  <div class="form-group">
+                    <label>Danh mục cha</label>
+                    <select required class="category-select form-control " name="categoryId">
+                      <option value="" disabled selected>Danh mục...</option>
+                      <%for(category of categories){%>
+                      <option value="<%=category._id%>"><%=category.name%></option>
+                      <%}%>
+                    </select>
+                  </div>
+                  <div class="card-footer">
+                    <button  class="create-product-btn btn btn-primary">Tạo sản phẩm</button>
+                    <p style="color: gray;">Sau khi tạo xong sản phẩm hãy chuyển tab tạo chi tiết sản phẩm...</p>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="custom-content-above-profile" role="tabpanel" aria-labelledby="custom-content-above-profile-tab">
+                  <form action="/product-detail" method="POST">
+                  <div class="form-group">
+                    <label>Sản phẩm cha</label>
+                    <select required class="product-select form-control " name="productId">
+                      <option value="" disabled selected>Sản phẩm...</option>
+                      <%for(product of products){%>
+                      <option value="<%=product._id%>"><%=product.name%></option>
+                      <%}%>
+                    </select>
+                </div>
+                  <div class="form-group">
+                    <label>Màu sắc</label>
+                    <select required class="product-color form-control " name="color">
+                      <option value="" disabled selected>Màu sắc...</option>
+                      <%for(productColor of productColors){%>
+                      <option value="<%=productColor._id%>"><%=productColor.name%></option>
+                      <%}%>
+                    </select>
+                </div>
+                  <div class="picture-upload form-group">
+                    <label>Ảnh</label> <br>
+                        <div class="divForm">
+                  Select images: <input  type="file" name="myFiles" multiple>
+                  <button type="button" class="upload-btn btn btn-secondary">Tải ảnh lên</button>
+                </div>
+                </div>
+                <div class="size-amount form-group mb-2" style="background-color: rgb(159, 188, 252);">
+                  <label>Kích cỡ,Số lượng</label>
+                  <div class="d-flex">
+                    <select required class="product-size form-control m-2 " name="size[]">
+                      <option value="" disabled selected>Kích cỡ...</option>
+                      <option value="S">S</option>
+                      <option value="M">M</option>
+                      <option value="L">L</option>
+                      <option value="XL">XL</option>
+                      <option value="2XL">2XL</option>
+                    </select>
+                    <input name="amount[]" class=" form-control m-2" type="text" placeholder="Số lượng...">
+                  </div>
+              </div>
+              <a class="add-btn " style="cursor: pointer;">
+                <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+              </svg> Thêm kích cỡ, số lượng... </a>
+
+              <div class="card-footer">
+                <button  class="create-productDetail-btn btn btn-primary">Tạo chi tiết sản phẩm</button>
+              </div>
+             </form>
+              </div>
+              <form style="visibility: hidden;" id="myForm"></form>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+    
+
+   
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="adminlte/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- bs-custom-file-input -->
+<script src="adminlte/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<!-- AdminLTE App -->
+<script src="adminlte/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="adminlte/dist/js/demo.js"></script>
+<!-- Page specific script -->
+<script src="/js/product-form.js"></script>
+<script>
+$(function () {
+  bsCustomFileInput.init();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | Projects</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="adminlte/plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="adminlte/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="/css/category.css">
+</head>
+
+<body class="hold-transition sidebar-mini">
+  <!-- Site wrapper -->
+  <div class="wrapper">
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+
+          <h3 class="header-title">Sản phẩm</h3>
+
+          <div class="d-flex">
+            <form action="/product-list" method="GET">
+              <input name="name" type="text" placeholder="Tên sản phẩm" value="<%=match.name%>">
+              <select class="filter-category " name="categoryId">
+                <%if(match.categoryId){%>
+                  <%for(const category of categories){%>
+                    <%if(match.categoryId==category._id ){%>
+                      <option value="<%=category._id%>" selected><%=category.name%></option>
+                      <%}else{%>
+                        <option value="<%=category._id%>"><%=category.name%></option>
+                        <%}}%>
+                          <%}else{%>
+                            <option value="">Danh mục</option>
+                            <%for(const category of categories){%>
+                              <option value="<%=category._id%>"><%=category.name%></option>
+                              <%}%>
+                                <%}%>
+              </select>
+              <select class="filter-category  " name="status">
+                <%if(match.status){%>
+                  <%if(match.status==0){%>
+                    <option value="">Trạng thái</option>
+                    <option value="0" selected>Hoạt động</option>
+                    <option value="1">Tạm ngừng</option>
+                    <%}if(match.status==1){%>
+                      <option value="">Trạng thái</option>
+                      <option value="0">Hoạt động</option>
+                      <option value="1" selected>Tạm ngừng</option>
+                      <%}}else{%>
+                        <option value="">Trạng thái</option>
+                        <option value="0">Hoạt động</option>
+                        <option value="1">Tạm ngừng</option>
+                        <%}%>
+              </select>
+              <button class="btn btn-secondary ml-2">Bộ lọc</button>
+            </form>
+            <%if(match.name|| match.status || match.categoryId){%>
+              <form action="/product-list" method="GET">
+                <button class="btn btn-danger ml-2">Bỏ lọc</button>
+              </form>
+              <%}%>
+            <a href="/product-form" class="btn btn-primary mx-2">
+              Thêm mới
+            </a>
+
+            <div class="dropdown d-inline">
+              <button class="btn btn-success dropdown-toggle " type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sắp xếp
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <form action="/product-list?status" method="GET">
+                  <input name="name" type="hidden" value="<%=match.name%>">
+                  <input name="categoryId" type="hidden" value="<%=match.categoryId%>">
+                  <input name="status" type="hidden" value="<%=match.status%>">
+                  <button name="sort" value="1" class="dropdown-item">Tên</button>
+                  <button name="sort" value="2" class="dropdown-item">Mới-Cũ</button>
+                  <button name="sort" value="3" class="dropdown-item">Cũ-Mới</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+
+        <!-- Default box -->
+        <div class="card" style="height: 60vh;">
+
+          <div class="card-body p-0">
+            <table class="table table-striped projects">
+              <thead>
+                <tr>
+
+                  <th>
+                    Ảnh
+                  </th>
+
+                  <th>
+                    Tên
+                  </th>
+                  <th>
+                    Giá (VND)
+                  </th>
+                  <th>
+                    Chi tiết sản phẩm
+                  </th>
+                  <th>
+                    Tạo/cập nhật
+                  </th>
+                  <th class="text-center">
+                    Trạng thái
+                  </th>
+                  <th style="width: 20%">
+                    Hành động
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="content-tbody">
+                <%for(const product of products){%>
+                  <tr>
+                    <td>
+
+                      <%for(const productDetail of productDetails){%>
+
+                        <%if(JSON.stringify(product.productDetailIds[0])==JSON.stringify(productDetail._id) ){%>
+                          <img style="height: 80px;" src="<%=productDetail.pictures[0]%>" alt="">
+                          <%}}%>
+
+                    </td>
+                    <td class="parent-td ">
+                      <%=product.name%>
+                    </td>
+                    <td>
+                      <%=numeral(product.price).format('0,0')%>
+                    </td>
+                    <td class="project-state">
+
+                      <button type="button" data-toggle="modal" data-target="#a-<%=product._id%>" class="btn btn-secondary">Chi
+                        tiết</button>
+
+                      <!-- Modal -->
+                      <div class="modal fade " id="a-<%=product._id%>" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable"style="width: 100vh;">
+                          <div class="modal-content " style="height: 100vh;">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Chi tiết sản phẩm</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body ">
+                              <table class="table table-striped projects"> 
+                                <thead>
+                                  <tr>
+                                    <th>
+                                      Ảnh
+                                    </th>
+                  
+                                    <th>
+                                      Màu sắc
+                                    </th>
+                                    <th>
+                                     Size-Số lượng (Cái)
+                                    </th>
+                                   
+                                  </tr>
+                                </thead>
+                                <tbody class="content-tbody">
+                              <%for(const productDetail of productDetails){%>
+                              <%for(const data of product.productDetailIds){%>
+  
+                                <%if(JSON.stringify(data)==JSON.stringify(productDetail._id) ){%>
+                                    <tr>
+                                      <td>
+                                        <%for(const ele of productDetail.pictures){%>
+                                        <img style="height: 80px;" src="<%=ele%>" alt="">
+                                        <%}%>
+                                      </td>
+                                      <td>
+                                        <%for(const productColor of productColors){%>
+                                          <%if (productDetail.colorId== productColor._id ){%>
+                                            <%=productColor.name%>
+                                          <%}}%>
+                                      </td>
+                                      <td>
+                                        <%for(const element of productDetail.sizeIds){%>
+                                            <%=element.size%> - <%=element.amount%> <br>
+                                          <%}%>
+
+                                      </td>
+                                      
+                                    </tr>
+                                    <%}}}%>
+                                    </tbody>
+
+                              </table>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="">
+                      <a>
+                        <%=dayjs(product.createdAt).format('DD-MM-YYYY HH:mm')%>
+                      </a>
+                      <br />
+                      <small style="color: gray;">
+                        <%=dayjs(product.updatedAt).format('DD-MM-YYYY HH:mm') %>
+                      </small>
+                    </td>
+                    <td class="project-state">
+                      <%if(product.status==0) {%>
+                        <span class="badge badge-success">Hoạt động</span>
+                        <%} else{%>
+                          <span class="badge badge-danger">Tạm ngừng</span>
+                          <%}%>
+                    </td>
+                    <td class="project-actions ">
+                      <input type="hidden" value="<%=product._id%>">
+                     
+                      <a href="/product-list/<%=product._id%>" class=" btn btn-info btn-sm" >
+                        <i class="fas fa-pencil-alt">
+                        </i>
+                      </a>
+
+                      <a class="delete-btn btn btn-danger btn-sm" href="#">
+                        <i class="fas fa-trash">
+                        </i>
+                      </a>
+                    </td>
+                  </tr>
+                  <%}%>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+        <!-- /.card-body -->
+
+          <!-- pagination -->
+          <div class="row">
+            
+            <!-- hiển thị phân trang nếu có trang -->
+            <% if(pages> 0) { %>
+              <div class="w-100 d-flex justify-content-between mx-5">
+               <p class="mt-2"> </p>
+                <ul class="pagination">
+  
+                  <!-- FIRST ITEM -->
+                  <% if(current==1) { %>
+  
+                    <li class="page-item disabled">
+                      <a class="page-link" href="/">First</a>
+                    </li>
+                    <% } else { %>
+  
+                      <li class="page-item">
+                        <form action="product-list" method="GET">
+                                     <input name="name" type="hidden" value="<%=match.name%>">
+                                      <input name="categoryId" type="hidden" value="<%=match.categoryId%>">
+                                      <input name="status" type="hidden" value="<%=match.status%>">
+                                      <input name="sort" type="hidden" value="<%=match.sort%>">
+                        <button name="page" value="<%= i %>"class="page-link" >First</button>
+                      </form>
+                      </li>
+                      <% } %>
+  
+                        <!-- ITEMS  -->
+                        <% var i=(Number(current)> 3 ? Number(current) - 2 : 1) %>
+  
+                          <% if(i !==1) { %>
+                            <li class="page-item disabled">
+                              <a class="page-link" href="#">...</a>
+                            </li>
+                            <% } %>
+                              <% for(; i <=(Number(current) + 2) && i <=pages; i++) { %>
+                                <% if(i==current) { %>
+                                  <li class="page-item active">
+                                    <form action="/product-list" method="GET">
+                                      <input name="name" type="hidden" value="<%=match.name%>">
+                                      <input name="categoryId" type="hidden" value="<%=match.categoryId%>">
+                                      <input name="status" type="hidden" value="<%=match.status%>">
+                                      <input name="sort" type="hidden" value="<%=match.sort%>">
+                                    <button name="page" value="<%= i %>" class="page-link" ><%= i %></button>
+                                  </form>
+                                  </li>
+                                  <% } else { %>
+                                    <li class="page-item">
+                                      <form action="/product-list"method="GET" >
+                                        <input name="name" type="hidden" value="<%=match.name%>">
+                                      <input name="categoryId" type="hidden" value="<%=match.categoryId%>">
+                                      <input name="status" type="hidden" value="<%=match.status%>">
+                                      <input name="sort" type="hidden" value="<%=match.sort%>">
+                                      <button name="page" value="<%= i %>" class="page-link" ><%= i %></button>
+                                    </form>
+                                    </li>
+                                    <% } %>
+                                      <% if (i==Number(current) + 2 && i < pages) { %>
+                                        <li class="page-item disabled">
+                                          <a class="page-link" href="#">...</a>
+                                        </li>
+                                        <% } %>
+                                          <% } %>
+  
+                                            <!-- LAST ITEM -->
+                                            <% if(current==pages) { %>
+  
+                                              <li class="page-item disabled">
+                                                <a class="page-link" href="#">Last</a>
+                                              </li>
+                                              <% } else { %>
+  
+                                                <li class="page-item">
+                                                  <form action="product-list" method="GET">
+                                                    <input name="name" type="hidden" value="<%=match.name%>">
+                                                    <input name="categoryId" type="hidden" value="<%=match.categoryId%>">
+                                                    <input name="status" type="hidden" value="<%=match.status%>">
+                                                    <input name="sort" type="hidden" value="<%=match.sort%>">
+                                                  <button  name="page" value="<%=pages %>" class="page-link" >Last</button>
+                                                </form>
+                                                </li>
+                                                <% } %>
+                </ul>
+              </nav>
+              <% } %>
+          </div>
+         </div>
+
+        <!-- /.card -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+  </div>
+  <!-- ./wrapper -->
+
+  <!-- jQuery -->
+  <script src="adminlte/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="adminlte/dist/js/adminlte.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="adminlte/dist/js/demo.js"></script>
+  <script src="/js/productsJquery.js"></script>
+</body>
+
+</html>

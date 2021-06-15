@@ -1,0 +1,46 @@
+
+.menu{
+    border: 1px solid black;
+    background-color: #e7e7e7;
+    width: 15%;
+    height: 100vh;
+}
+.inputWitdh{
+    height: 50px;
+    width: 150px;
+}
+.parent{
+    width: 85%;
+}
+.content{
+    margin: 5px;
+   
+}
+.createForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 300px;
+}
+
+.updateForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 300px;
+}
+.linkBackground{
+    background-color: rgb(110, 220, 240);
+    color: black;
+}
+.linkHover{
+    color: black;
+}
+.linkHover:hover{
+    background-color: rgb(110, 220, 240);
+}
+.img{
+    width: 80px;
+    height: 80px;
+}
+
