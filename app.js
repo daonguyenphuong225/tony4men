@@ -23,6 +23,6 @@ app.use('/',express.static(path.join(__dirname,'public')))
 
 app.use('/',Router)
 
-app.listen(8000,()=>{
-    console.log('server abc chay cong 8000');
+app.listen(3000,()=>{
+    console.log('server abc chay cong 3000');
 })

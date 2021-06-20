@@ -15,15 +15,21 @@ var ProductSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    productDetailIds:[],
+    productDetailIds:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "productDetail",
+    }],
     categoryId:{
-        type: String,
-        required: true,
-        trim: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "categories",
+    },
+    categoryParentId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "categories",
     }
 },{
     timestamps: true
-},{collection:"product"});
-var ProductModel = mongoose.model('product',ProductSchema)
+},{collection:"products"});
+var ProductModel = mongoose.model('products',ProductSchema)
 
 module.exports = ProductModel;

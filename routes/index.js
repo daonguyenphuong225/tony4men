@@ -5,7 +5,7 @@ const StatisticsRouter = require('./admin/statisticsRouter')
 const ProvinceRouter = require('./admin/provinceRouter')
 const ProductRouter = require('./admin/productRoutes');
 const LoginRouter = require('./admin/loginRouter');
-// const UserRouter = require('./userRouter');
+const UserRouter = require('./user/userRouter');
 // const CartRouter = require('./cartRouter');
 
 router.use('/',LoginRouter)
@@ -13,7 +13,7 @@ router.use('/',CategoryRouter);
 router.use('/',StatisticsRouter);
 router.use('/',ProvinceRouter);
 router.use('/',ProductRouter);
-// router.use('/user',UserRouter);
+router.use('/',UserRouter);
 // router.use('/',CartRouter);
 
 

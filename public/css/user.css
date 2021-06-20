@@ -5,9 +5,8 @@
 html,
 body {
    font-family: "Rozha One", serif;
-   margin:0;
-   padding:0;
    height:100%;
+
 }
 #container {
    min-height:100%;
@@ -23,8 +22,7 @@ body {
    width: 100%;
 }
 #body {
- 
-   padding:10px;
+    padding:5px;
    padding-bottom:60px;   /* Height of the footer */
 }
 #footer {
@@ -64,14 +62,18 @@ body {
 
 
  .sub-menu-parent { position: relative; }
-
+.sub-menu-parent:hover .underline{
+   visibility: visible;
+   opacity: 1;
+}
 .sub-menu { 
+   list-style-type: none;
   visibility: hidden; /* hides sub-menu */
   opacity: 0;
   position: absolute;
+  width: 400px;
   top: 100%;
   left: 0;
-  width: 150px;
   transform: translateY(-2em);
   z-index: -1;
   transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
@@ -84,7 +86,7 @@ body {
   opacity: 1;
   z-index: 1;
   transform: translateY(0%);
-  transition-delay: 0s, 0s, 0.3s; /* this removes the transition delay so the menu will be visible while the other styles transition */
+  transition-delay: 0s, 0s, 0s; /* this removes the transition delay so the menu will be visible while the other styles transition */
 }
 
 /* presentational */
@@ -156,7 +158,7 @@ h3:hover a{
    color: rgb(0, 0, 0); 
 
 }
-.product .underline{
+ .underline{
    height: 2px;
    width: 100%;
    background-color: black;
@@ -172,8 +174,9 @@ h3:hover a{
 
 .picture-parent {
    position: relative;
-  height: 150;
 }
+
+
 .picture-parent img.products-picture-hover {
  position: absolute;
  top: 0;
@@ -195,7 +198,7 @@ h3:hover a{
    border-right:1px solid white ;
 }
 .detail-btn{
-   width: 50%;
+   width: 100%;
    margin: 0;
    border-radius: 0;
    padding: 5px;
@@ -218,6 +221,74 @@ h3:hover a{
 .products-price{
    font-weight: 600;
 }
+.category-click{
+   cursor: pointer;
+}
 .footer-link a{
    text-decoration: none;
 }
+.ul-filter{
+   list-style-type: none;
+   
+}
+.title-filter p{
+   margin-left: 20px;
+   margin-right: 20px;
+   
+}
+.ul-filter li p{
+  font-weight: bold;
+ 
+}
+
+/* Product-detail page */
+
+.preview-pictures{
+   margin: 20px;
+   display: flex;
+   flex-direction: column;
+ 
+   
+}
+.preview-pictures a img {
+   width: 100px;;
+   margin-bottom: 20px;
+   padding: 5px;
+   border: 1px solid rgb(172, 171, 171);
+}
+.preview-pictures a  {
+
+  flex-wrap: wrap;
+}
+.detail-picture{
+
+   margin: 20px;
+   height: auto;
+}
+.order-content{
+   margin: 20px;
+   overflow: hidden;
+   
+}
+.order-content span{
+   font-weight: bold;
+   font-size: 18px;
+   margin: 5px;
+   
+}
+.line-div{
+   width: 100vh;
+   height: 1px;
+   background-color: rgb(182, 181, 181);
+   margin-top: 5px;
+   margin-bottom: 5px;
+}
+@media only screen and (max-width: 770px){
+   .preview-pictures{
+       display: none;
+   }
+ }
+ .amount-input{
+    width: 50px;
+    height: 35px;
+ }

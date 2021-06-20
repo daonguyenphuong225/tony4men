@@ -74,7 +74,7 @@ exports.productList = async function (req, res) {
 exports.createForm = async function (req, res) {
   try {
     let categories = await CategoryModel.find()
-    let products = await ProductModel.find()
+    let products = await ProductModel.find().sort({"createdAt": -1})
     let productColors = await ProductColortModel.find()
     let rs = {
       categories: categories,
@@ -88,6 +88,10 @@ exports.createForm = async function (req, res) {
 }
 exports.createProduct = async function (req, res) {
   try {
+    let categoryId = req.body.categoryId
+    let data = await CategoryModel.findOne({_id:categoryId})
+    let categoryParentId = data.parentId
+    req.body.categoryParentId = categoryParentId
     let product = await ProductModel.create(req.body)
     await CategoryModel.updateOne(
       { _id: req.body.categoryId },

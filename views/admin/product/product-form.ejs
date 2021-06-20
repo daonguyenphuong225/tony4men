@@ -71,8 +71,9 @@
                     <select required class="category-select form-control " name="categoryId">
                       <option value="" disabled selected>Danh mục...</option>
                       <%for(category of categories){%>
+                        <%if(category.parentId != ''){%>
                       <option value="<%=category._id%>"><%=category.name%></option>
-                      <%}%>
+                      <%}}%>
                     </select>
                   </div>
                   <div class="card-footer">

@@ -12,12 +12,15 @@ var CategorySchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    productIds: [],
-    parentId: String   
+    productIds: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "products",
+    }],
+    parentId: String
 },
 {
     timestamps:true
-},{collection:"category"});
-var CategoryModel = mongoose.model('category',CategorySchema)
+},{collection:"categories"});
+var CategoryModel = mongoose.model('categories',CategorySchema)
 
 module.exports = CategoryModel;

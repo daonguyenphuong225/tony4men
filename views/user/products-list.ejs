@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="/css/user.css">
+
+
+</head>
+
+<body>
+
+  <div id="container">
+    <div id="header">
+      <%- include('header') %>
+    </div>
+
+    <div id="body m-0">
+
+      <div class="content mx-4" style="overflow: hidden;">
+        <%for(const category of categories){%>
+          <%if(category._id==id){%>
+            <div class="d-flex justify-content-between align-items-center">
+              <h2 class="m-4">
+                <%=category.name%>
+              </h2>
+              <div class="my-0 mx-5">
+                <form action="" method="GET">
+                  <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                      data-bs-toggle="dropdown" aria-expanded="false">
+                      Sắp xếp theo:
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <input name="color" type="hidden" value="<%=filter.color%>">
+                      <input name="size" type="hidden" value="<%=filter.size%>">
+                      <input name="price" type="hidden" value="<%=filter.price%>">
+                      <li><button name="sort" value="0" class="dropdown-item">Mới nhất</button></li>
+                      <li><button name="sort" value="1" class="dropdown-item">Giá tăng dần</button></li>
+                      <li><button name="sort" value="2" class="dropdown-item">Giá giảm dần</button></li>
+                    </ul>
+                  </div>
+
+                </form>
+              </div>
+
+            </div>
+
+            <%}}%>
+              <div class="ms d-flex align-items-center">
+                <div class="d-flex">
+
+                  <ul class="ul-filter me-auto mb-2 p-0 d-flex">
+                    <li class="sub-menu-parent" tab-index="0">
+
+                      <div class="d-flex title-filter">
+                        <p>Màu sắc <svg style="color: gray;" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                            <path
+                              d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                          </svg></p>
+                        <p>Kích cỡ <svg style="color: gray;" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                            <path
+                              d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                          </svg></p>
+                        <p>Khoảng giá <svg style="color: gray;" xmlns="http://www.w3.org/2000/svg" width="16"
+                            height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                            <path
+                              d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                          </svg></p>
+
+                      </div>
+
+                      <form class="d-flex" action="<%=id%>" action="GET">
+                        <ul class="sub-menu d-flex justify-content-between ">
+
+                          <div class="color ">
+                            <%for(const productColor of productColors){%>
+                              <%if(filter.color==productColor._id ){%>
+                                <li class="d-flex align-items-center me-5">
+                                  <input name="color" type="radio" value="<%=productColor._id%>" checked>
+                                  <div class="color-select rounded-circle m-2"
+                                    style="width: 20px;height: 20px;border: 1px solid black; background-color:<%=productColor.color%>"></div>
+                                </li>
+                                <%}else{%>
+                                  <li class="d-flex align-items-center me-5">
+                                    <input name="color" type="radio" value="<%=productColor._id%>">
+                                    <div class="color-select rounded-circle m-2"
+                                      style="width: 20px;height: 20px;border: 1px solid black; background-color:<%=productColor.color%>"></div>
+                                  </li>
+                                  <%}}%>
+                          </div>
+                          <div class="size me-5">
+                            <%let sizes=['S','M','L','XL','2XL']%>
+                              <%for(const data of sizes){%>
+                                <%if(filter.size){%>
+                                  <%if(data==filter.size ){%>
+                                    <li>
+                                      <input name="size" class="" type="radio" value="<%=data%>" checked> <span>
+                                        <%=data%>
+                                      </span>
+                                    </li>
+                                    <%}else{%>
+                                      <li>
+                                        <input name="size" class="" type="radio" value="<%=data%>"> <span>
+                                          <%=data%>
+                                        </span>
+                                      </li>
+                                      <%}}else{%>
+                                        <li>
+                                          <input name="size" class="" type="radio" value="<%=data%>"> <span>
+                                            <%=data%>
+                                          </span>
+                                        </li>
+                                        <%}}%>
+                          </div>
+                          <div class="price ms-3">
+                            <%if(filter.price){%>
+                              <%if(filter.price=='0' ){%>
+                                <li><input name="price" type="radio" value="0" checked> <span>Dưới 200,000</span></li>
+                                <li><input name="price" type="radio" value="1"> <span>Từ 200,00-500,000</span></li>
+                                <li><input name="price" type="radio" value="2"> <span>Từ 500,00-1,000,000</span></li>
+                                <li><input name="price" type="radio" value="3"> <span>Trên 1,000,000</span></li>
+                                <%}%>
+                                  <%if(filter.price=='1' ){%>
+                                    <li><input name="price" type="radio" value="0"> <span>Dưới 200,000</span></li>
+                                    <li><input name="price" type="radio" value="1" checked> <span>Từ
+                                        200,00-500,000</span></li>
+                                    <li><input name="price" type="radio" value="2"> <span>Từ 500,00-1,000,000</span>
+                                    </li>
+                                    <li><input name="price" type="radio" value="3"> <span>Trên 1,000,000</span></li>
+                                    <%}%>
+                                      <%if(filter.price=='2' ){%>
+                                        <li><input name="price" type="radio" value="0"> <span>Dưới 200,000</span></li>
+                                        <li><input name="price" type="radio" value="1"> <span>Từ 200,00-500,000</span>
+                                        </li>
+                                        <li><input name="price" type="radio" value="2" checked> <span>Từ
+                                            500,00-1,000,000</span></li>
+                                        <li><input name="price" type="radio" value="3"> <span>Trên 1,000,000</span></li>
+                                        <%}%>
+                                          <%if(filter.price=='3' ){%>
+                                            <li> <input name="price" type="radio" value="0"> <span>Dưới 200,000</span>
+                                            </li>
+                                            <li><input name="price" type="radio" value="1"> <span>Từ
+                                                200,00-500,000</span></li>
+                                            <li><input name="price" type="radio" value="2"> <span>Từ
+                                                500,00-1,000,000</span></li>
+                                            <li><input name="price" type="radio" value="3" checked> <span>Trên
+                                                1,000,000</span></li>
+                                            <%}}else{%>
+                                              <li><input name="price" type="radio" value="0"> <span>Dưới 200,000</span>
+                                              </li>
+                                              <li><input name="price" type="radio" value="1"> <span>Từ
+                                                  200,00-500,000</span></li>
+                                              <li><input name="price" type="radio" value="2"> <span>Từ
+                                                  500,00-1,000,000</span></li>
+                                              <li><input name="price" type="radio" value="3"> <span>Trên
+                                                  1,000,000</span></li>
+                                              <%}%>
+                          </div>
+                        </ul>
+
+
+                </div>
+                <button class="btn btn-dark" style="margin-bottom: 16px;">Lọc</button>
+                <%if(filter.color || filter.size || filter.price){%>
+                  <a href="/products/<%=id%>" class="btn btn-danger mx-2" style="margin-bottom: 16px;">Bỏ lọc</a>
+                  <%}%>
+                    </form>
+              </div>
+              <div class="row row-cols-1 row-cols-sm-2  row-cols-md-2 row-cols-lg-4 g-5 px-2">
+                <%for(const product of products){%>
+                  <div class="product-card col">
+                    <div class="card h-100">
+                      <div class="picture-parent">
+                        <a href="/productDetail/<%=product._id%>">
+                          <img src="<%=product.productDetailIds[0].pictures[0]%>" class="products-picture card-img-top">
+                          <%if(product.productDetailIds[1]){%>
+                            <img src="<%=product.productDetailIds[1].pictures[0]%>"
+                              class="products-picture-hover card-img-top">
+                            <%}else{%>
+                              <img src="<%=product.productDetailIds[0].pictures[1]%>"
+                                class="products-picture-hover card-img-top">
+                              <%}%>
+                        </a>
+                      </div>
+                      <div class="d-flex flex-column justify-content-center align-items-center">
+                        <h5 class="products-name card-title">
+                          <%=product.name%>
+                        </h5>
+                        <p class="products-id d-none card-text"></p>
+                        <p class="products-price card-text">
+                          <%=numeral(product.price).format('0,0')%>đ
+                        </p>
+
+                      </div>
+                      <div class=" product-footer">
+                        <form action="/productDetail/<%=product._id%>" method="GET">
+                          <button class="detail-btn btn btn-dark" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eyeglasses" viewBox="0 0 16 16">
+                            <path d="M4 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm2.625.547a3 3 0 0 0-5.584.953H.5a.5.5 0 0 0 0 1h.541A3 3 0 0 0 7 8a1 1 0 0 1 2 0 3 3 0 0 0 5.959.5h.541a.5.5 0 0 0 0-1h-.541a3 3 0 0 0-5.584-.953A1.993 1.993 0 0 0 8 6c-.532 0-1.016.208-1.375.547zM14 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/>
+                          </svg>  Chi tiết</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <%}%>
+              </div>
+              <!-- pagination -->
+              <div class="row pagination">
+
+                <!-- hiển thị phân trang nếu có trang -->
+                <% if(pages> 0) { %>
+                  <div class="w-100 d-flex justify-content-center ">
+
+                    <ul class="pagination m-5">
+
+                      <!-- FIRST ITEM -->
+                      <% if(current==1) { %>
+
+                        <li class="page-item disabled">
+                          <a class="page-link" href="/"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                            <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                          </svg></a>
+                        </li>
+                        <% } else { %>
+
+                          <li class="page-item">
+                            <form action="" method="GET">
+                              <input name="color" type="hidden" value="<%=filter.color%>">
+                              <input name="size" type="hidden" value="<%=filter.size%>">
+                              <input name="price" type="hidden" value="<%=filter.price%>">
+                              <input name="sort" type="hidden" value="<%=filter.sort%>">
+                              <button name="page" value="<%= i %>" class="page-link"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                              </svg></button>
+                            </form>
+                          </li>
+                          <% } %>
+
+                            <!-- ITEMS  -->
+                            <% var i=(Number(current)> 3 ? Number(current) - 2 : 1) %>
+
+                              <% if(i !==1) { %>
+                                <li class="page-item disabled">
+                                  <a class="page-link" href="#">...</a>
+                                </li>
+                                <% } %>
+                                  <% for(; i <=(Number(current) + 2) && i <=pages; i++) { %>
+                                    <% if(i==current) { %>
+                                      <li class="page-item active">
+                                        <form action="" method="GET">
+                                          <input name="color" type="hidden" value="<%=filter.color%>">
+                                          <input name="size" type="hidden" value="<%=filter.size%>">
+                                          <input name="price" type="hidden" value="<%=filter.price%>">
+                                          <input name="sort" type="hidden" value="<%=filter.sort%>">
+                                          <button name="page" value="<%= i %>" class="page-link">
+                                            <%= i %>
+                                          </button>
+                                        </form>
+                                      </li>
+                                      <% } else { %>
+                                        <li class="page-item">
+                                          <form action="" method="GET">
+                                            <input name="color" type="hidden" value="<%=filter.color%>">
+                                            <input name="size" type="hidden" value="<%=filter.size%>">
+                                            <input name="price" type="hidden" value="<%=filter.price%>">
+                                            <input name="sort" type="hidden" value="<%=filter.sort%>">
+                                            <button name="page" value="<%= i %>" class="page-link">
+                                              <%= i %>
+                                            </button>
+                                          </form>
+                                        </li>
+                                        <% } %>
+                                          <% if (i==Number(current) + 2 && i < pages) { %>
+                                            <li class="page-item disabled">
+                                              <a class="page-link" href="#">...</a>
+                                            </li>
+                                            <% } %>
+                                              <% } %>
+
+                                                <!-- LAST ITEM -->
+                                                <% if(current==pages) { %>
+
+                                                  <li class="page-item disabled">
+                                                    <a class="page-link " href="#"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                                      <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                                      <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                                    </svg></a>
+                                                  </li>
+                                                  <% } else { %>
+
+                                                    <li class="page-item">
+                                                      <form action="" method="GET">
+                                                        <input name="color" type="hidden" value="<%=filter.color%>">
+                                                        <input name="size" type="hidden" value="<%=filter.size%>">
+                                                        <input name="price" type="hidden" value="<%=filter.price%>">
+                                                        <input name="sort" type="hidden" value="<%=filter.sort%>">
+                                                        <button name="page" value="<%=pages %>"
+                                                          class="page-link"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                                            <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                                          </svg></button>
+                                                      </form>
+                                                    </li>
+                                                    <% } %>
+                    </ul>
+                    </nav>
+                    <% } %>
+                  </div>
+              </div>
+      </div>
+
+
+    </div>
+    <div id="footer">
+      <%- include('footer') %>
+    </div>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="/js/user.js "></script>
+
+
+</html>

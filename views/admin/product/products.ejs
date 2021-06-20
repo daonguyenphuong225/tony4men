@@ -42,8 +42,9 @@
                           <%}else{%>
                             <option value="">Danh mục</option>
                             <%for(const category of categories){%>
+                              <%if(category.parentId){%>
                               <option value="<%=category._id%>"><%=category.name%></option>
-                              <%}%>
+                              <%}}%>
                                 <%}%>
               </select>
               <select class="filter-category  " name="status">
