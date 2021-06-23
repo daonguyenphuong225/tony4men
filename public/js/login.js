@@ -65,7 +65,7 @@ $(document).ready(function () {
                    }
                    else{
                     setCookie('token', data.token, 1)
-                    location.replace("/category-list");
+                    location.replace("/admin");
                    }
                 })
                 .catch((err) => {

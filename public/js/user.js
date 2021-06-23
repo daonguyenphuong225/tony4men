@@ -1,4 +1,18 @@
 $(document).ready(function () {
+
+  // Trang HEADER//
+  let cartStorage = sessionStorage.getItem("cart");
+  if (cartStorage) {
+    cart = JSON.parse(cartStorage);
+    $('.cartNumber').html(`(${cart.length})`)
+  } else {
+    $('.cartNumber').html(`(0)`)
+  }
+
+
+  // Trang HEADER//
+
+  // Trang HOME//
   $('.category-click').click(function () {
     let id = $(this).parent().siblings().eq(0).val()
     let content = $(this).parent().parent().parent().siblings().eq(0).children().eq(0)
@@ -75,19 +89,125 @@ $(document).ready(function () {
       }
     })
   })
-
-  $('.picture-btn').click(function(){
-   let picture= $(this).children().eq(0).attr('src')
+  // Trang HOME//
+  $('.picture-btn').click(function () {
+    let picture = $(this).children().eq(0).attr('src')
     $('.swiper-wrapper').html('')
     $('.swiper-wrapper').append(`<img src="${picture}" alt="error">`)
   })
 
-
-  $('.minus-btn').click(function(){
-    
+  // Trang PRODUCT DETAIL//
+  $('input[name = "color"]').click(function () {
+    let productDetailId = $(this).siblings().eq(0).val()
+    $.ajax({
+      url: "/get-size",
+      type: "POST",
+      data: {
+        productDetailId: productDetailId
+      },
+      success(result) {
+        $(".size-ul").html('')
+        for (const data of result) {
+          $(".size-ul").append(`
+         <li class="d-flex align-items-center mx-1">
+                                    <input required name="size" class="" type="radio" value="${data}">
+                                    <span>
+                                    ${data}
+                                    </span>
+                                  </li>
+         `)
+        }
+      },
+      error(error) {
+        console.log(error)
+      }
+    })
   })
-});
 
+  $('.plus-btn').click(function () {
+    let amount = $('.amount-input').val()
+    amount++
+    $('.amount-input').val(amount)
+  })
+  $('.minus-btn').click(function () {
+    let amount = $('.amount-input').val()
+    if (amount > 1) {
+      amount--
+      $('.amount-input').val(amount)
+    }
+  })
+
+  $('.addToCard').click(function () {
+    addToCard()
+  })
+  $('.buy-now').click(function () {
+    addToCard()
+  })
+
+
+  function addToCard() {
+    let picture = $('.picture-a').children().eq(0).attr('src');
+    let name = $('h5').html()
+    let id = $('.productId').html()
+    let price = $('.price').val()
+    let color = $('input[name="color"]:checked').val()
+    let size = $('input[name="size"]:checked').val()
+    let amount = parseInt($('.amount-input').val())
+    let productDetailId = $('input[ name="productDetailId"]').val()
+    if(size && color){
+    $.ajax({
+      url: "/check-amount",
+      type: "POST",
+      data: {
+        productDetailId:productDetailId,
+        size:size,
+        amount:amount
+      },
+      success(result) {
+       if(result == 0){
+         let cart = []
+      let cartItem = {
+        id: id,
+        productDetailId:productDetailId,
+        picture: picture,
+        name: name,
+        price: price,
+        color: color,
+        size: size,
+        amount: amount
+      }
+      let cartStorage = sessionStorage.getItem("cart");
+      if (cartStorage) {
+        cart = JSON.parse(cartStorage);
+        let index = cart.findIndex(c => c.id === id && c.color === color && c.size === size)
+        if (index !== -1) {
+          cart[index].amount += amount
+        } else {
+          cart.push(cartItem)
+        }
+      } else {
+        cart.push(cartItem)
+      }
+      cartString = JSON.stringify(cart)
+      sessionStorage.setItem("cart", cartString)
+      alert("Tạo đơn hàng thành công")
+       }
+       if(result == 1){
+        alert('Số lượng đặt vượt quá số lượng cho phép')
+      }
+      },
+      error(error) {
+        console.log(error)
+      }
+    })
+  }else{
+      alert('Xin hãy chọn đầy đủ màu sắc, kích thước')
+    }
+   
+  }
+  // Trang PRODUCT DETAIL//
+});
+//  Swiper JS//
 var swiper = new Swiper(".mySwiper", {
   spaceBetween: 30,
   centeredSlides: true,

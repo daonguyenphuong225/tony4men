@@ -1,30 +1,28 @@
 const mongoose = require('mongoose')
-var orderSchema = new mongoose.Schema({
+var CustomerSchema = new mongoose.Schema({
     name:{
         type: String,
         required: true,
         trim: true
     },
-    phone:Number,
+    phone:{
+        type: String,
+        required: true,
+        trim: true
+    },
+    email:{
+        type: String,
+        required: true,
+        trim: true
+    },
     address:{
         type: String,
         required: true,
         trim: true
     },
-    note:{
-        type: String,
-        required: true,
-        trim: true
-    },
-    totalPrice:Number,
-    orderDetail: Array,
-    status:{
-        type:Number,
-        default:0
-    }
 },{
     timestamps: true
-});
-var OrderModel = mongoose.model('order',orderSchema)
+},{collection:"customers"});
+var CustomerModel = mongoose.model('customers',CustomerSchema)
 
-module.exports = OrderModel;
+module.exports = CustomerModel;

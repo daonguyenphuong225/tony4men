@@ -4,14 +4,22 @@ const {fullTextSearch} = require('../../until/until')
 
 const dayjs = require('dayjs')
 const jwt = require('jsonwebtoken')
-
 const bcryptjs = require('../../service/login');
-
 
 exports.admin = function (req, res) {
     res.render('admin/admin.ejs')
 }
-
+exports.checkAccount = function(req,res,next){
+    try {
+        const token = req.cookies.token
+        const ketqua = jwt.verify(token,'phuong225')
+        if(ketqua){
+            next()
+        }
+    } catch (error) {
+       res.redirect('/login')
+    }
+}
 
 exports.getList = async function (req, res) {
    try {

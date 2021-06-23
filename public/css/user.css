@@ -23,7 +23,7 @@ body {
 }
 #body {
     padding:5px;
-   padding-bottom:60px;   /* Height of the footer */
+   padding-bottom:30px; 
 }
 #footer {
    position:absolute;
@@ -292,3 +292,17 @@ h3:hover a{
     width: 50px;
     height: 35px;
  }
+
+ /* Cart-detail page */
+ .customerDetail{
+    border-right: 1px solid rgb(204, 203, 203);
+ }
+ .cartDetail{
+   background-color: rgb(245, 243, 243)  ;
+
+ }
+ .customerDetail input,select{
+    height: 50px;
+    
+ }
+ /* Cart-detail page */

@@ -4,14 +4,21 @@ const ProducDetailtModel = require('../../models/product/producstDetail')
 const numeral = require("numeral");
 const CategoryModel = require('../../models/categoriesSchema')
 const { fullTextSearch } = require('../../until/until')
-
-
 const dayjs = require('dayjs')
 const jwt = require('jsonwebtoken')
-
 const bcryptjs = require('../../service/login');
 
-
+exports.checkAccount = function(req,res,next){
+  try {
+      const token = req.cookies.token
+      const ketqua = jwt.verify(token,'phuong225')
+      if(ketqua){
+          next()
+      }
+  } catch (error) {
+     res.redirect('/login')
+  }
+}
 exports.productList = async function (req, res) {
   try {
     let { name, categoryId, status, sort } = req.query

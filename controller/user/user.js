@@ -1,31 +1,24 @@
 const ProductModel = require('../../models/product/productSchema')
 const ProducDetailtModel = require('../../models/product/producstDetail')
 const ProductColor = require('../../models/product/productColor')
+const CustomerModel = require('../../models/user/customer')
+const OrderModel = require('../../models/user/orderSchema')
+const OrderDetailModel = require('../../models/user/orderDetail')
 const numeral = require("numeral");
 const CategoryModel = require('../../models/categoriesSchema')
+const { headerData } = require('./header')
 const { fullTextSearch } = require('../../until/until')
+const ProductColorModel = require('../../models/product/productColor')
 
 
-
+// Trang HOME////
 exports.homeList = async function (req, res) {
   try {
-    let process1 = ProducDetailtModel.find()
-    let process2 = CategoryModel.find({ parentId: '' })
-    let productDetails = await process1
-    let categoryParents = await process2
-    let categories = await CategoryModel.find().populate({
-      path: "productIds",
-      populate: {
-        path: "productDetailIds",
-
-      },
-    });
-
+    let header = await headerData()
+    let productDetails = await ProducDetailtModel.find()
     let products = await ProductModel.find().sort({ "createdAt": -1 }).populate({ path: "categoryId" }).populate({ path: "productDetailIds" });
-
     let rs = {
-      categories: categories,
-      categoryParents: categoryParents,
+      ...header,
       products: products,
       numeral: numeral,
       productDetails: productDetails,
@@ -34,7 +27,12 @@ exports.homeList = async function (req, res) {
     res.render('user/user.ejs', rs)
   }
   catch (error) {
-    res.json(error)
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
+
   }
 }
 
@@ -49,8 +47,10 @@ exports.getProducts = async function (req, res) {
 
   res.json({ products: products, price: price })
 }
+// Trang HOME////
 
 
+// Trang PRODUCT LIST////
 exports.productList = async function (req, res) {
   try {
     let id = req.params.id
@@ -95,13 +95,8 @@ exports.productList = async function (req, res) {
       }
     }
 
-    let process2 = CategoryModel.find({ parentId: '' })
-    let process3 = CategoryModel.find()
-    let process4 = ProductColor.find()
-    let categoryParents = await process2
-    let categories = await process3
-    let productColors = await process4
-
+    let header = await headerData()
+    let productColors = await ProductColor.find()
     let productFilter = await CategoryModel.findOne({ _id: id })
     let products = []
     if (productFilter.parentId == "") {
@@ -185,8 +180,7 @@ exports.productList = async function (req, res) {
 
     ProductModel.where(match).countDocuments((err, count) => {
       let rs = {
-        categories: categories,
-        categoryParents: categoryParents,
+        ...header,
         products: products,
         numeral: numeral,
         productColors: productColors,
@@ -203,16 +197,14 @@ exports.productList = async function (req, res) {
     res.json(error)
   }
 }
+// Trang PRODUCT LIST////
 
+// Trang PRODUCT DETAIL////
 exports.getProductDetail = async function (req, res) {
   try {
     let id = req.params.id
-    let process2 = CategoryModel.find({ parentId: '' })
-    let process3 = CategoryModel.find()
-    let process4 = ProductColor.find()
-    let categoryParents = await process2
-    let categories = await process3
-    let productColors = await process4
+    let header = await headerData()
+    let productColors = await ProductColor.find()
     product = await ProductModel.findOne({ _id: id }).populate({ path: "categoryId" })
       .populate({
         path: "productDetailIds",
@@ -220,24 +212,13 @@ exports.getProductDetail = async function (req, res) {
           path: "colorId",
         },
       });
-    let sizes = []
-    let arrange =[]
-    for (const ProductDetail of product.productDetailIds) {
-      for (const data of ProductDetail.sizeIds) {
-        arrange.push(data.size)
-      }
-    }
-    sizes = [...new Set(arrange)];
-    
 
     let rs = {
-      categories: categories,
-      categoryParents: categoryParents,
+      ...header,
       product: product,
       numeral: numeral,
       productColors: productColors,
       id: id,
-      sizes: sizes
     }
 
     res.render('user/productDetail.ejs', rs)
@@ -245,3 +226,212 @@ exports.getProductDetail = async function (req, res) {
     console.log(error)
   }
 }
+
+exports.getSize = async function (req, res) {
+  try {
+    let productDetailId = req.body.productDetailId
+    let productDetail = await ProducDetailtModel.findOne({ _id: productDetailId })
+    let size = []
+    for (const sizeId of productDetail.sizeIds) {
+      size.push(sizeId.size)
+    }
+    res.json(size);
+  }
+  catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
+
+  }
+}
+exports.amountCheck = async function (req, res) {
+  try {
+    let { productDetailId, size, amount } = req.body
+    let productDetail = await ProducDetailtModel.findOne({ _id: productDetailId })
+    let producSize = productDetail.sizeIds
+    objIndex = producSize.findIndex((obj => obj.size == size));
+    if (producSize[objIndex].amount - amount >= 0) {
+      res.json(0)
+    } else {
+      res.json(1)
+    }
+
+  }
+  catch (error) {
+    res.json({
+      success: false,
+      message: error.message
+    })
+
+  }
+}
+
+
+// Trang PRODUCT DETAIL////
+
+// Trang CART ////
+exports.cartDetail = async function (req, res) {
+  try {
+    let header = await headerData()
+    let rs = {
+      ...header,
+      numeral: numeral,
+    }
+
+    res.render('user/cart.ejs', rs)
+  }
+  catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
+
+  }
+}
+
+exports.amountLastCheck = async function (req, res, next) {
+  try {
+    let order = req.body.order
+
+    let i = 0
+    for (const data of order) {
+
+      let productDetail = await ProducDetailtModel.findOne({ _id: data.productDetailId })
+
+      let producSize = productDetail.sizeIds
+      objIndex = producSize.findIndex((obj => obj.size == data.size));
+      if (producSize[objIndex].amount - data.amount >= 0) {
+        i++
+      }
+    }
+    if (i == order.length) {
+      next()
+    } else {
+      res.json(0)
+    }
+  }
+  catch (error) {
+    res.json({
+      success: false,
+      message: error.message
+    })
+
+  }
+}
+exports.CreateCart = async function (req, res) {
+  try {
+    let { name, email, phone, address, order, note, totalPrice } = req.body
+    if (!note) {
+      note = "0"
+    }
+    let oldCustomer = await CustomerModel.findOne({ name: name, phone: phone })
+    let customerId = ''
+    if (oldCustomer) {
+      await CustomerModel.updateOne({ _id: oldCustomer._id }, { address: address })
+      customerId = oldCustomer._id
+    } else {
+      let newCustomer = await CustomerModel.create({
+        name: name,
+        phone: phone,
+        email: email,
+        address: address
+      })
+
+      customerId = newCustomer._id
+    }
+    let orderDetailIds = []
+    let product = {}
+    let color = {}
+    let orderDetail = {}
+    let productDetailId = ''
+    for (const data of order) {
+      product = await ProductModel.findOne({ _id: data.id }).populate({ path: "productDetailIds" });
+      color = await ProductColorModel.findOne({ name: data.color });
+
+      for (productDetail of product.productDetailIds) {
+        if (productDetail.colorId == color._id) {
+          productDetailId = productDetail._id
+        }
+      }
+      orderDetail = await OrderDetailModel.create({
+        productId: product._id,
+        productName: product.name,
+        productDetailId: productDetailId,
+        unitPrice: data.price,
+        size: data.size,
+        amount: data.amount
+      })
+      orderDetailIds.push(orderDetail._id)
+    }
+    let newOrder = await OrderModel.create({
+      customerId: customerId,
+      orderDetailIds: orderDetailIds,
+      status: 0,
+      totalPrice: totalPrice,
+      note: note
+    })
+    for (const data of order) {
+      let productDetail = await ProducDetailtModel.findOne({ _id: data.productDetailId })
+      let producSize = productDetail.sizeIds
+      objIndex = producSize.findIndex((obj => obj.size == data.size));
+      producSize[objIndex].amount = producSize[objIndex].amount - data.amount
+      await ProducDetailtModel.updateOne({ _id: data.productDetailId }, { sizeIds: producSize })
+      let ab = await ProducDetailtModel.findOne({ _id: data.productDetailId })
+    }
+    res.json(1)
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
+  }
+
+
+}
+// Trang CART ////
+
+
+// Trang SEARCH ////
+exports.search = async function (req, res) {
+  try {
+    let name = req.query.nameSearch
+    let perPage = 12;
+    let page = req.query.page || 1;
+
+    let match = {}
+    match.name = fullTextSearch(name)
+    let header = await headerData()
+    let productDetails = await ProducDetailtModel.find()
+    let products = await ProductModel.find(match).sort({ "createdAt": -1 })
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .populate({ path: "categoryId" }).populate({ path: "productDetailIds" });
+    ProductModel.where(match).countDocuments((err, count) => {
+      let rs = {
+        ...header,
+        products: products,
+        numeral: numeral,
+        productDetails: productDetails,
+        nameSearch: req.query.nameSearch,
+        current: page,
+        pages: Math.ceil(count / perPage)
+      }
+      res.render('user/search.ejs', rs)
+    })
+
+
+  }
+  catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
+
+  }
+}
+
+
+// Trang SEARCH ////
+

@@ -24,7 +24,7 @@
         <div class="preview-pictures col-1">
           <%for(productDetail of product.productDetailIds){%>
             <%for(picture of productDetail.pictures){%>
-              <a><img src="<%=picture%>" alt="error"></a>
+              <a class="picture-a"><img src="<%=picture%>" alt="error"></a>
               <%}}%>
 
         </div>
@@ -41,12 +41,9 @@
           </div>
         </div>
         <div class="col-md-3 col-sm-11 col-11 order-content">
-          <h5 style="font-weight: bold;">
-            <%=product.name%>
-          </h5>
-          <span>Mã sản phẩm:</span><span style="font-weight: normal;">
-            <%=product._id%>
-          </span> <br>
+          <h5 style="font-weight: bold;"><%=product.name%></h5>
+          <span>Mã sản phẩm:</span> <br>
+          <span class="productId" style="font-weight: normal;"><%=product._id%></span> <br>
           <%let amounts=[]%>
             <%for(const productDetail of product.productDetailIds){%>
               <%for(const sizeId of productDetail.sizeIds){%>
@@ -59,15 +56,17 @@
                           <span>Hết hàng</span>
                           <%}%>
                             <div class="line-div"></div>
-                            <h3 style="font-weight: bold;">
+                            <h3  style="font-weight: bold;">
                               <%=numeral(product.price).format('0,0')%>đ
                             </h3>
+                            <input class="price" type="hidden" value="<%=product.price%>">
                             <form action="">
                               <span>Màu sắc</span>
                               <ul class="d-flex" style="padding: 0;">
                                 <%for(const ProductDetail of product.productDetailIds){%>
                                   <li class="d-flex align-items-center mx-3">
-                                    <input name="color" type="radio" value="<%=ProductDetail.colorId._id%>">
+                                    <input name="productDetailId" type="hidden" value="<%=ProductDetail._id%>">
+                                    <input name="color" type="radio" value="<%=ProductDetail.colorId.name%>" required>
                                     <div class="color-select rounded-circle m-2"
                                       style="width: 20px;height: 20px;border: 1px solid black ; background-color:<%=ProductDetail.colorId.color%>">
                                     </div>
@@ -75,21 +74,18 @@
                                   <%}%>
                               </ul>
                               <span>Kích thước</span>
-                              <ul class="d-flex" style="padding: 0; list-style-type: none;">
-                                <%for(const size of sizes){%>
-                                  <li class="d-flex align-items-center mx-1">
-                                    <input name="size" class="" type="radio" value="<%=size%>"> 
-                                    <span><%=size%></span>
-                                  </li>
-                                  <%}%>
+                              <ul class="d-flex size-ul" style="padding: 0; list-style-type: none;">
+                                  *Vui lòng chọn màu sắc sản phẩm*
                               </ul>
 
                               <span>Số lượng</span>
                               <div>
                                 <button type="button" class="minus-btn btn btn-secondary ">-</button>
-                                  <input style="text-align:center" class="amount-input" type="text" value="1">
+                                <input style="text-align:center" class="amount-input" type="text" value="1">
                                 <button type="button" class="plus-btn btn btn-secondary ">+</button>
                               </div>
+                              <button type="button" class="addToCard btn btn-dark my-3">THÊM VÀO GIỎ HÀNG</button>
+                              <button class="buy-now btn btn-dark my-3">MUA NGAY</button>
                             </form>
 
         </div>
