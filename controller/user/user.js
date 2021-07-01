@@ -112,6 +112,7 @@ exports.productList = async function (req, res) {
     let newProducts2 = []
     let productIds1 = []
     let productIds2 = []
+    // Lọc size
     if (size) {
       for (const product of products) {
         for (const productDetailId of product.productDetailIds) {
